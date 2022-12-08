@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "a": {
+                "type": "number"
+            },
+            "b": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "a": {
+                            "type": "object",
+                            "properties": {
+                                "b": {
+                                    "anyOf": [
+                                        {
+                                            "type": [
+                                                "integer",
+                                                "string"
+                                            ]
+                                        },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "c": {
+                                    "type": [
+                                        "integer",
+                                        "null"
+                                    ]
+                                },
+                                "d": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "b"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "a"
+                    ]
+                }
+            },
+            "c": {
+                "type": "integer"
+            }
+        },
+        "required": [
+            "a"
+        ]
+    }
+}

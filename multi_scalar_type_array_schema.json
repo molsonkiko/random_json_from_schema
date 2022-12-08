@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "type": [
+            "number",
+            "string"
+        ]
+    }
+}
