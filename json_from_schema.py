@@ -71,7 +71,7 @@ def random_object(schema, min_length, max_length):
     required = schema.get('required', set())
     optional_keys = list(set(properties.keys()) - set(required))
     if optional_keys:
-        num_optional_included = random.randint(0, len(optional_keys) - 1)
+        num_optional_included = random.randint(0, len(optional_keys))
         optional_included = random.sample(optional_keys, k=num_optional_included)
     else:
         optional_included = []
