@@ -1,4 +1,4 @@
-import json
+from copy import deepcopy
 import random
 import string
 
@@ -31,6 +31,10 @@ def random_thing(schema, min_length, max_length):
     type_ = schema.get('type')
     if not type_:
         return random_anyOf(schema['anyOf'], min_length, max_length)
+    enum_ = schema.get('enum')
+    if enum_:
+        # any type can be an enum - it's just a list of possible values
+        return deepcopy(random.choice(enum_))
     if isinstance(type_, list):
         # multiple scalar types possible
         type_choice = random.choice(type_)
@@ -48,7 +52,17 @@ def random_array(schema, min_length, max_length):
     minlen = schema.get('minItems', min_length)
     maxlen = schema.get('maxItems', max_length)
     len_ = random.randint(minlen, maxlen)
-    return [random_thing(items, min_length, max_length) for ii in range(len_)]
+    contains = schema.get('contains')
+    contains_items = []
+    if contains:
+        minContains = schema.get('minContains', 1)
+        maxContains = schema.get('maxContains', len_)
+        ncontains = random.randint(minContains, maxContains)
+        len_ -= ncontains
+        contains_items = [random_thing(contains, min_length, max_length) for ii in range(ncontains)]
+    stuff = contains_items +  [random_thing(items, min_length, max_length) for ii in range(len_)]
+    random.shuffle(stuff)
+    return stuff
     
 def random_object(schema, min_length, max_length):
     properties = schema.get('properties')

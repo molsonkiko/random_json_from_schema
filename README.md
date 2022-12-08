@@ -9,10 +9,16 @@ Supports the following keywords:
 ## all JSON
 * [anyOf](https://json-schema.org/draft/2020-12/json-schema-core.html#name-anyof)
 * type
+* [enum](https://json-schema.org/draft/2020-12/json-schema-validation.html#name-enum)
+
 ## objects
 * [properties](https://json-schema.org/draft/2020-12/json-schema-core.html#name-properties)
 * [required](https://json-schema.org/draft/2020-12/json-schema-validation.html#name-required)
+
 ## array
 * [items](https://json-schema.org/draft/2020-12/json-schema-core.html#name-items)
 * [minItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#name-minitems)
 * [maxItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#name-maxitems)
+* [contains](https://json-schema.org/draft/2020-12/json-schema-core.html#name-contains)
+* [minContains](https://json-schema.org/draft/2020-12/json-schema-core.html#name-contains)
+* [maxContains](https://json-schema.org/draft/2020-12/json-schema-core.html#name-contains)
