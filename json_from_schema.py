@@ -28,6 +28,12 @@ def random_float(x, y, z):
 def null(x, y, z): return None
 
 def random_thing(schema, min_length, max_length):
+    if isinstance(schema, bool):
+        if schema:
+            return random_anything({}, min_length, max_length)
+        return None
+    if len(schema) == 0:
+        return random_anything({}, min_length, max_length)
     type_ = schema.get('type')
     if not type_:
         return random_anyOf(schema['anyOf'], min_length, max_length)
@@ -40,6 +46,18 @@ def random_thing(schema, min_length, max_length):
         type_choice = random.choice(type_)
         return GENERATORS[type_choice](None, None, None)
     return GENERATORS[type_](schema, min_length, max_length)
+    
+def random_anything(schema, min_length, max_length):
+    '''could be any type'''
+    return random.choice([
+        random_array,
+        random_boolean,
+        random_float,
+        random_int,
+        random_object,
+        random_string,
+        null,
+    ])(schema, min_length, max_length)
 
 def random_anyOf(anyOf, min_length, max_length):
     schema = random.choice(anyOf)
@@ -47,8 +65,9 @@ def random_anyOf(anyOf, min_length, max_length):
 
 def random_array(schema, min_length, max_length):
     items = schema.get('items')
-    if not items: # all instances of this array were empty
-        return []
+    if not items:
+        return [] # no "items" keyword means that the array could contain anything
+        # but in practice it will typically only be used if the array is always empty
     minlen = schema.get('minItems', min_length)
     maxlen = schema.get('maxItems', max_length)
     len_ = random.randint(minlen, maxlen)
@@ -66,8 +85,10 @@ def random_array(schema, min_length, max_length):
     
 def random_object(schema, min_length, max_length):
     properties = schema.get('properties')
-    if not properties: # all instances of the object were empty
-        return {}
+    if not properties:
+        return {} # as with no "items" keyword for arrays, this means that
+        # the object could hypothetically contain anything, but we will
+        # assume that this just means the object is empty.
     required = schema.get('required', set())
     optional_keys = list(set(properties.keys()) - set(required))
     if optional_keys:
